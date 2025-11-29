@@ -1,0 +1,23 @@
+{
+  "name": "corvette-bot",
+  "version": "1.0.0",
+  "description": "Corvette Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "whatsapp-bot"
+  ],
+  "author": "ABRAHAN-M Y ARLETTE",
+  "license": "ISC",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc.9",
+    "awesome-phonenumber": "^7.6.0",
+    "chalk": "^4.1.2",
+    "file-type": "^16.5.4",
+    "node-fetch": "^2.7.0",
+    "pino": "^10.1.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
