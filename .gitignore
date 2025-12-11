@@ -1,2 +1,8 @@
-node_modules/
-auth_info_baileys/
+# Dependencies
+/node_modules
+
+# Session data
+/auth_info_baileys
+
+# Logs
+npm_output.log

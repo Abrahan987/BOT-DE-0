@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import makeWASocket, { DisconnectReason, useMultiFileAuthState, Browsers } from '@whiskeysockets/baileys';
+import baileys from '@whiskeysockets/baileys';
 import pino from 'pino';
 import { Boom } from '@hapi/boom';
 import config from './config.js';
@@ -28,12 +28,12 @@ async function loadPlugins() {
 }
 
 async function connectToWhatsApp() {
-    const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys');
-    const sock = makeWASocket({
+    const { state, saveCreds } = await baileys.useMultiFileAuthState('auth_info_baileys');
+    const sock = baileys.default({
         logger: pino({ level: 'silent' }),
         printQRInTerminal: false, // Disable QR code
         auth: state,
-        browser: Browsers.macOS('Desktop'), // Set browser
+        browser: baileys.Browsers.macOS('Desktop'), // Set browser
     });
 
     // Handle pairing code
@@ -55,7 +55,7 @@ async function connectToWhatsApp() {
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update;
         if (connection === 'close') {
-            const shouldReconnect = (lastDisconnect.error instanceof Boom) && lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut;
+            const shouldReconnect = (lastDisconnect.error instanceof Boom) && lastDisconnect.error.output.statusCode !== baileys.DisconnectReason.loggedOut;
             console.log('Connection closed due to ', lastDisconnect.error, ', reconnecting ', shouldReconnect);
             if (shouldReconnect) {
                 connectToWhatsApp();
