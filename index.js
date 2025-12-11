@@ -4,6 +4,7 @@ import baileys from '@whiskeysockets/baileys';
 import pino from 'pino';
 import { Boom } from '@hapi/boom';
 import config from './config.js';
+import readline from 'readline';
 
 const commands = new Map();
 
@@ -38,18 +39,12 @@ async function connectToWhatsApp() {
 
     // Handle pairing code
     if (!sock.authState.creds.registered) {
-        setTimeout(async () => {
-            if (!config.botNumber) {
-                console.error('Error: botNumber is not defined in config.js. Please add it.');
-                return;
-            }
-            try {
-                const code = await sock.requestPairingCode(config.botNumber);
-                console.log(`Your pairing code is: ${code}`);
-            } catch (error) {
-                console.error('Failed to request pairing code:', error);
-            }
-        }, 3000);
+        const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+        const question = (text) => new Promise((resolve) => rl.question(text, resolve));
+        const phoneNumber = await question('Please enter your bot number (e.g., 573237649689): ');
+        const code = await sock.requestPairingCode(phoneNumber);
+        console.log(`Your pairing code is: ${code}`);
+        rl.close();
     }
 
     sock.ev.on('connection.update', (update) => {

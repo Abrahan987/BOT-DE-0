@@ -7,23 +7,4 @@
 Loading plugins...
 Loaded command: allfake from allfake.js
 Loaded command: menu from menu.js
-Your pairing code is: MTVCX9CT
-Connection closed due to  Error: Connection Failure
-    at WebSocketClient.<anonymous> (/app/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:556:13)
-    at WebSocketClient.emit (node:events:519:28)
-    at /app/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:257:35
-    at Object.decodeFrame (/app/node_modules/@whiskeysockets/baileys/lib/Utils/noise-handler.js:144:17)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
-  data: { reason: '401', location: 'rva' },
-  isBoom: true,
-  isServer: false,
-  output: {
-    statusCode: 401,
-    payload: {
-      statusCode: 401,
-      error: 'Unauthorized',
-      message: 'Connection Failure'
-    },
-    headers: {}
-  }
-} , reconnecting  false
+Please enter your bot number (e.g., 573237649689):
