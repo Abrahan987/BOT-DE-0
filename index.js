@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import makeWASocket, { DisconnectReason, useMultiFileAuthState } from '@whiskeysockets/baileys';
+import makeWASocket, { DisconnectReason, useMultiFileAuthState, Browsers } from '@whiskeysockets/baileys';
 import pino from 'pino';
 import { Boom } from '@hapi/boom';
 import config from './config.js';
@@ -31,9 +31,26 @@ async function connectToWhatsApp() {
     const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys');
     const sock = makeWASocket({
         logger: pino({ level: 'silent' }),
-        printQRInTerminal: true,
+        printQRInTerminal: false, // Disable QR code
         auth: state,
+        browser: Browsers.macOS('Desktop'), // Set browser
     });
+
+    // Handle pairing code
+    if (!sock.authState.creds.registered) {
+        setTimeout(async () => {
+            if (!config.botNumber) {
+                console.error('Error: botNumber is not defined in config.js. Please add it.');
+                return;
+            }
+            try {
+                const code = await sock.requestPairingCode(config.botNumber);
+                console.log(`Your pairing code is: ${code}`);
+            } catch (error) {
+                console.error('Failed to request pairing code:', error);
+            }
+        }, 3000);
+    }
 
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update;
